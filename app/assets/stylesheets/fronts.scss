@@ -1,0 +1,118 @@
+a {
+  text-decoration: none;
+}
+
+.wrapper{
+  display: flex;
+  height: calc(100vh - 100px);
+}
+
+.header{
+  background-color: lightblue;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.side {
+  background-color: #333333;
+  width: 250px;
+  position: relative;
+    &__user {
+      background-color: grey;
+      width: 220px;
+      height: 600px;
+      margin-top: 40px;
+      margin-left: auto;
+      margin-right: auto;
+        &__image {
+          background-color: honeydew;
+          width: 220px;
+          height: 220px;
+          object-fit: fill;
+        }
+        &__info {
+          &__name {
+            color: #ffffff;
+            margin-top: 30px;
+          }
+        }
+      }
+    &__icons {
+      background-color: indigo;
+      width: auto;
+      height: 40px;
+      margin: 10px;
+      &__edit {
+        
+      }
+      &__out {
+        
+      }
+    }
+}
+
+.main {
+  background-color: red;
+  width: calc(100vw - 250px);
+    &__header{
+      height: 40px;
+      width: 100%;
+      padding: 20px 15px 0px ;
+      background-color: #ffffff;
+      display: flex;
+        &__data {
+
+        }
+        &__serch{
+
+        }
+    }
+
+    &__rooms {
+      width: 97.5%;
+      height: 88%;
+      background-color: #ffffff;
+      margin: 10px 0px 0px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      overflow: scroll;
+      justify-content: space-between;
+        &__state {
+          font-size: 12px;
+          width: 300px;
+          height: 230px;
+          margin: 15px 20px 10px 20px;
+          background-color: rgb(241, 237, 194);
+            &__image {
+              width: 270px;
+              height: 170px;
+              margin: 10px 15px;
+              background-color: lavender;
+            }
+            &__data {
+              display: flex;
+              &__box {
+                color: gray;
+                width: 100%;
+                margin-left: 10px;
+                  &__name {
+                  }
+                  &__people {
+                  }
+              }
+              &__enter {
+                text-align: center;
+                display: inline-block;
+                width: 70px;
+                margin: 0px 10px 0px 10px;
+                background-color: #38aef0;
+                font-size: 16px;
+                color: #fff;
+                padding-top: 7px;
+              }
+          }   
+        }
+    }
+}
