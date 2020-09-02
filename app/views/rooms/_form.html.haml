@@ -1,0 +1,10 @@
+= form_with model: room, local: true do |f|
+  .SettingGroupForm__field
+    .SettingGroupForm__leftField
+      = f.label :name, "ルーム名", class: 'SettingGroupForm__label'
+    .SettingGroupForm__rightField
+      = f.text_field :name, class: 'SettingGroupForm__input', placeholder: 'ルーム名を入力してください'
+  .SettingGroupForm__field
+    .SettingGroupForm__leftField
+    .SettingGroupForm__rightField
+      = f.submit class: 'SettingGroupForm__button'

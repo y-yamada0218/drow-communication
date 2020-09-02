@@ -2,5 +2,5 @@
 %body
   .header
   .wrapper
-    = render "main"
+    = render partial: 'main', locals: { rooms: @rooms }
     = render "side"

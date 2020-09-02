@@ -1,5 +1,11 @@
 %body
   .header
+    参加者：
+    - @users.each do |user|
+      = user.name
+
+
   .wrapper
     = render "main_drow"
     = render "side_ber"
+%script{:src => "https://cdn.jsdelivr.net/npm/colorjoe@4/dist/colorjoe.min.js"}
