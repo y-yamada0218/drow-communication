@@ -1,25 +1,43 @@
+
+// ページの読み込みが完了したらコールバック関数が呼ばれる
+// ※コールバック: 第2引数の無名関数(=関数名が省略された関数)
 window.addEventListener('load', () => {
   const canvas = document.querySelector('#draw-area');
+  // contextを使ってcanvasに絵を書いていく
   const context = canvas.getContext('2d');
+
+  // 直前のマウスのcanvas上のx座標とy座標を記録する
   const lastPosition = { x: null, y: null };
+
+  // マウスがドラッグされているか(クリックされたままか)判断するためのフラグ
   let isDrag = false;
 
-
+  // 絵を書く
   function draw(x, y) {
+    // マウスがドラッグされていなかったら処理を中断する。
+    // ドラッグしながらしか絵を書くことが出来ない。
     if(!isDrag) {
       return;
     }
 
-    context.lineCap = 'round'; // 丸みを帯びた線にする
-    context.lineJoin = 'round'; // 丸みを帯びた線にする
+    // 線の状態を定義する
+    context.lineJoin = 'round'; 
+    context.lineWidth = 1; 
+    context.strokeStyle = 'black'; 
 
     if (lastPosition.x === null || lastPosition.y === null) {
+      // ドラッグ開始時の線の開始位置
       context.moveTo(x, y);
     } else {
+      // ドラッグ中の線の開始位置
       context.moveTo(lastPosition.x, lastPosition.y);
     }
+    
     context.lineTo(x, y);
+
     context.stroke();
+
+    // 現在のマウス位置を記録して、次回線を書くときの開始点に使う
     lastPosition.x = x;
     lastPosition.y = y;
   }
@@ -29,17 +47,14 @@ window.addEventListener('load', () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  // マウスのドラッグを開始したらisDragのフラグをtrueにしてdraw関数内で
-  // お絵かき処理が途中で止まらないようにする
+
   function dragStart(event) {
-    // これから新しい線を書き始めることを宣言する
-    // 一連の線を書く処理が終了したらdragEnd関数内のclosePathで終了を宣言する
+    
     context.beginPath();
 
     isDrag = true;
   }
-  // マウスのドラッグが終了したら、もしくはマウスがcanvas外に移動したら
-  // isDragのフラグをfalseにしてdraw関数内でお絵かき処理が中断されるようにする
+  
   function dragEnd(event) {
     // 線を書く処理の終了を宣言する
     context.closePath();
@@ -59,9 +74,6 @@ window.addEventListener('load', () => {
     canvas.addEventListener('mouseup', dragEnd);
     canvas.addEventListener('mouseout', dragEnd);
     canvas.addEventListener('mousemove', (event) => {
-      // eventの中の値を見たい場合は以下のようにconsole.log(event)で、
-      // デベロッパーツールのコンソールに出力させると良い
-      // console.log(event);
 
       draw(event.layerX, event.layerY);
     });
@@ -69,58 +81,84 @@ window.addEventListener('load', () => {
 
   // イベント処理を初期化する
   initEventHandler();
-
-  /* 選択を未選択状態に */
-var clearCs = function(cs,def){
-
-  for(var i=0,len=cs.length;i<len;i++){
-
-    cs[i].setAttribute('class',def);
-  }
-}
-
-/* 線の太さ入力欄に変更があった時   */
-wd.onchange = function(){
-
-  clearCs(wds,'wds');
-  ctx.lineWidth = this.value;
-  this.setAttribute('class','cur');
-}
-/* 線選択枠のクリックイベントの登録 */
-for(var i=0,len=wds.length;i<len;i++){
-
-  wds[i].onclick = function(){
-
-    /* 線の太さ入力欄の選択状態を解除 */
-    wd.removeAttribute('class');
-
-    clearCs(wds,'wds');
-    ctx.lineWidth = this.getAttribute('wd');
-    this.setAttribute('class','wds cur');
-  }
-}
-
-/* 色ウィンドウから選択された時 */
-cl.onchange = function(){
-
-  /* 選択した色を保存するボタン */
-  var p10 = c10.parentNode;
-
-  clearCs(cls,'cls');
-  ctx.strokeStyle = cl.value;
-  c10.style.background = cl.value;
-  p10.setAttribute('cl',cl.value);
-  p10.setAttribute('class','cls cur');
-}
-/* 色選択枠のクリックイベントの登録 */
-for(var i=0,len=cls.length;i<len;i++){
-
-  cls[i].onclick = function(){
-
-    clearCs(cls,'cls');
-    ctx.strokeStyle = this.getAttribute('cl');
-    this.setAttribute('class','cls cur');
-  }
-}
-
 });
+
+// - 線の色を変更する機能
+// - 消しゴム機能
+window.addEventListener('load', () => {
+  const canvas = document.querySelector('#draw-area');
+  const context = canvas.getContext('2d');
+  const lastPosition = { x: null, y: null };
+  let isDrag = false;
+ 
+  let currentColor = '#000000';
+ 
+  function draw(x, y) {
+    if(!isDrag) {
+      return;
+    }
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
+    context.lineWidth = 5;
+    context.strokeStyle = currentColor;
+    if (lastPosition.x === null || lastPosition.y === null) {
+      context.moveTo(x, y);
+    } else {
+      context.moveTo(lastPosition.x, lastPosition.y);
+    }
+    context.lineTo(x, y);
+    context.stroke();
+ 
+    lastPosition.x = x;
+    lastPosition.y = y;
+  }
+ 
+  function clear() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  }
+ 
+  function dragStart(event) {
+    context.beginPath();
+ 
+    isDrag = true;
+  }
+ 
+  function dragEnd(event) {
+    context.closePath();
+    isDrag = false;
+    lastPosition.x = null;
+    lastPosition.y = null;
+  }
+ 
+  function initEventHandler() {
+    const clearButton = document.querySelector('#clear-button');
+    clearButton.addEventListener('click', clear);
+ 
+    const eraserButton = document.querySelector('#eraser-button');
+    eraserButton.addEventListener('click', () => {
+      currentColor = '#FFFFFF';
+    });
+ 
+    canvas.addEventListener('mousedown', dragStart);
+    canvas.addEventListener('mouseup', dragEnd);
+    canvas.addEventListener('mouseout', dragEnd);
+    canvas.addEventListener('mousemove', (event) => {
+      draw(event.layerX, event.layerY);
+    });
+  }
+ 
+  // カラーパレットの設置
+  function initColorPalette() {
+    const joe = colorjoe.rgb('color-palette', currentColor);
+ 
+    joe.on('done', color => {
+      currentColor = color.hex();
+    });
+  }
+ 
+  initEventHandler();
+ 
+  // カラーパレット情報を初期化する
+  initColorPalette();
+});
+

@@ -54,7 +54,6 @@ a {
 }
 
 .main {
-  background-color: red;
   width: calc(100vw - 250px);
     &__header{
       height: 40px;
@@ -65,8 +64,8 @@ a {
         &__data {
 
         }
-        &__serch{
-
+        &__new-room {
+          text-align: left;
         }
     }
 
@@ -78,18 +77,17 @@ a {
       display: flex;
       flex-wrap: wrap;
       overflow: scroll;
-      justify-content: space-between;
         &__state {
           font-size: 12px;
           width: 300px;
           height: 230px;
-          margin: 15px 20px 10px 20px;
-          background-color: rgb(241, 237, 194);
+          margin: 35px 30px 10px 20px;
+          background-color: #e5ffaa;
             &__image {
               width: 270px;
               height: 170px;
               margin: 10px 15px;
-              background-color: lavender;
+              background-color: #ffffff;
             }
             &__data {
               display: flex;

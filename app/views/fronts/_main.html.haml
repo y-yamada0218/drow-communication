@@ -1,7 +1,21 @@
 .main
   .main__header
     .main__header__data
-      参加可能ルーム
+      参加可能ルーム： 
+    .main__header__c
+      = link_to new_room_path do
+        ルーム新規作成
 
   .main__rooms
-    = render "room"
+    - rooms.each do |room|
+      .main__rooms__state
+        .main__rooms__state__image
+        .main__rooms__state__data
+          .main__rooms__state__data__box
+            .main__rooms__state__data__box__name
+              = "ルーム名： #{room.name}"
+            .main__rooms__state__data__box__people
+              参加人数： ６人
+          .main__rooms__state__data__enter
+            = link_to drows_path(room.id) do
+              入室
