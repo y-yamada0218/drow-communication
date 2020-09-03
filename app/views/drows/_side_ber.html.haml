@@ -1,9 +1,17 @@
 .side_ber
 
+
   %span#color-palette
 
   %div
     %button#clear-button 全消し
   
   %button#eraser-button 消しゴムモード
+
+  //%button{:onclick => "TogetherJS(this); return false;"} TogetherJSを起動！
+
+  = form_with url: "#", html: {class: "side_ber__submit"}, local: true do |f|
+    %button#save_button ホゾイン
+
+
 

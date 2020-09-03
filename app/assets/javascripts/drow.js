@@ -160,5 +160,27 @@ window.addEventListener('load', () => {
  
   // カラーパレット情報を初期化する
   initColorPalette();
+
+//Canvas画像に表示されているデータをサーバーに保存する(PNG画像)
+$("#save_button").click(function () {
+  let url = drow_path();
+  data = canvas.toDataURL();
+  $.ajax({
+      type: 'post',
+      url: url,
+      data: data,
+      dataType: "json",
+      processData: false,
+      contentType: false
+  })
+  .done(function(response) { 
+    alert("メッセージ送信に成功しました");
+ })
+  .fail(function() {
+    alert("メッセージ送信に失敗しました");
+});
 });
 
+});
+
+  
