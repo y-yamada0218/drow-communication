@@ -160,5 +160,25 @@ window.addEventListener('load', () => {
  
   // カラーパレット情報を初期化する
   initColorPalette();
+
+  $('draw-area').on('submit', function(e){
+    e.preventDefault();
+    data = canvas.toDataURL();
+    let url = $(this).attr('action');
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: data,
+      dataType: 'json',
+      processData: false,
+      contentType: false
+    })
+    .done(function(data){
+      alert('sucsecc');
+    })
+    .fail(function(){
+      alert('error');
+    })
+  })
 });
 

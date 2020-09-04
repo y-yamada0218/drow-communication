@@ -22,6 +22,7 @@ class RoomsController < ApplicationController
   end
 
   def update
+    @room = Room.find(params[:id])
   end
 
   private
