@@ -5,12 +5,19 @@ window.addEventListener('load', () => {
   const canvas = document.querySelector('#draw-area');
   // contextを使ってcanvasに絵を書いていく
   const context = canvas.getContext('2d');
-
   // 直前のマウスのcanvas上のx座標とy座標を記録する
   const lastPosition = { x: null, y: null };
-
   // マウスがドラッグされているか(クリックされたままか)判断するためのフラグ
   let isDrag = false;
+  //
+  const chara = new Image();
+  const room_illust = $('#room-illust').val();
+  // console.log(room_illust)
+  chara.src = room_illust;
+  console.log(chara.src)
+  chara.onload = function onImageLoad() {
+    context.drawImage(chara, 0, 0, 1165, 650)
+  };
 
   // 絵を書く
   function draw(x, y) {
@@ -160,5 +167,29 @@ window.addEventListener('load', () => {
  
   // カラーパレット情報を初期化する
   initColorPalette();
-});
 
+  //保存ボタン押すとDBにURLとして保存する
+  $('#save-button').on('click',function(e){
+    e.preventDefault();
+    room_id = $('#room-info').val();
+      console.log(room_id)
+    data = canvas.toDataURL('image/png');
+      console.log(data)
+    let url = '/rooms/' + room_id
+      console.log(url)
+    $.ajax({
+      url: url,
+      type: "PATCH",
+      data: {illust: data},
+      dataType: 'json',
+      // processData: false,
+      // contentType: false
+    })
+    .done(function(data){
+      alert('success');
+    })
+    .fail(function(){
+      alert('error');
+    })
+  })
+});

@@ -10,12 +10,16 @@
     - rooms.each do |room|
       .main__rooms__state
         .main__rooms__state__image
+          - if room.illust == nil
+            うんこ
+          - else
+            = image_tag room.illust, size: "270x170"
         .main__rooms__state__data
           .main__rooms__state__data__box
             .main__rooms__state__data__box__name
               = "ルーム名： #{room.name}"
             .main__rooms__state__data__box__people
-              参加人数： ６人
+              参加人数： 
           .main__rooms__state__data__enter
-            = link_to drows_path(room.id) do
+            = link_to room_path(room.id) do
               入室
