@@ -1,11 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
   root "fronts#index"
-  resources :drows, only: [:index, :update]
   # get 'fronts', to: 'fronts#join', as: 'join' 
   # get 'drows', to: 'drows#leave', as: 'leave'
-
   resources :users, only: [:edit, :update, :index]
   resources :fronts, only: [:edit, :update, :index]
-  resources :rooms, only: [:new, :create, :edit, :update,]
+  resources :rooms, only: [:new, :show, :create, :edit, :update,]
 end
