@@ -2,7 +2,7 @@
 -#   %canvas#draw-area{:height => "650px", :style => "border: 1px solid #000000;", :width => "1165px"}
 -#   = f.hidden_field :image_url, :value => ''
 -#   = f.submit '保存'
-.main_drow
+.main_drow{"data-room-id": "#{@room.id}"}
   %canvas#draw-area{:height => "650px", :style => "border: 1px solid #000000;", :width => "1165px"}
     %input#room-illust{name: "room_illust", type: "hidden", value: @room.illust }/
     = form_for @room do |f|

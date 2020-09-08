@@ -9,12 +9,11 @@ window.addEventListener('load', () => {
   const lastPosition = { x: null, y: null };
   // マウスがドラッグされているか(クリックされたままか)判断するためのフラグ
   let isDrag = false;
-  //
+
+  //過去にCanvasが保存されていた場合、それを呼び出す
   const chara = new Image();
   const room_illust = $('#room-illust').val();
-  // console.log(room_illust)
   chara.src = room_illust;
-  console.log(chara.src)
   chara.onload = function onImageLoad() {
     context.drawImage(chara, 0, 0, 1165, 650)
   };
@@ -172,24 +171,55 @@ window.addEventListener('load', () => {
   $('#save-button').on('click',function(e){
     e.preventDefault();
     room_id = $('#room-info').val();
-      console.log(room_id)
     data = canvas.toDataURL('image/png');
-      console.log(data)
     let url = '/rooms/' + room_id
-      console.log(url)
     $.ajax({
       url: url,
       type: "PATCH",
       data: {illust: data},
       dataType: 'json',
-      // processData: false,
-      // contentType: false
     })
-    .done(function(data){
-      alert('success');
+    .done(function(){
+      console.log('success');
     })
     .fail(function(){
       alert('error');
     })
+  })
+  
+  //オートセーブ機能
+  $(function(){
+      room_id = $('#room-info').val();
+      let url = '/rooms/' + room_id
+      const room_illust = $('#room-illust').val();
+      console.log('success');
+
+      let reloadCanvas = function() {
+        data = canvas.toDataURL('image/png');
+      $.ajax({
+        url: url,
+        type: "PATCH",
+        data: {illust: data},
+        dataType: 'json',
+      })
+      .done(function(){
+        $.ajax({
+          url: url,
+          type: "GET",
+          data: {illust: data},
+          dataType: 'json',
+        })
+         const chara = new Image();
+         chara.src = room_illust;
+         chara.onload = function onImageLoad() {
+           context.drawImage(chara, 0, 0, 1165, 650)
+          };
+         console.log('success');
+      })
+      .fail(function(){
+        alert('error');
+      })
+    }
+      setInterval(reloadCanvas, 10000);
   })
 });
