@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   resources :users, only: [:edit, :update, :index]
   resources :fronts, only: [:edit, :update, :index]
   resources :rooms, only: [:new, :show, :create, :edit, :update,]
+
+  namespace :api do
+    resources :rooms, only: :index, defaults: { format: 'json' }
+  end
 end
