@@ -187,34 +187,50 @@ window.addEventListener('load', () => {
     })
   })
   
-  //オートセーブ機能
+  //自動セーブ、自動更新を同時に行う
   $(function(){
       room_id = $('#room-info').val();
-      let url = '/rooms/' + room_id
+      url = '/rooms/' + room_id
       const room_illust = $('#room-illust').val();
-      console.log('success');
 
       let reloadCanvas = function() {
         data = canvas.toDataURL('image/png');
+      //自動セーブ部分
       $.ajax({
         url: url,
         type: "PATCH",
         data: {illust: data},
         dataType: 'json',
+          //自動更新部分
+          success: function(data){
+            $.ajax({
+              url: url,
+              type: "GET",
+              dataType: 'json',
+            })
+            .done(function(data) {
+              console.log(data);
+              const chara = new Image();
+              chara.src = data.illust;
+              chara.onload = function onImageLoad() {
+                context.drawImage(chara, 0, 0, 1165, 650)
+                console.log('success.reload.onload');
+              };
+              console.log('success.reload');
+            })
+            .fail(function(){
+              console.log('error.reload');
+            })
+          }
       })
+
       .done(function(data){
-        console.log(data);
-        const chara = new Image();
-        chara.src = data.illust;
-        chara.onload = function onImageLoad() {
-           context.drawImage(chara, 0, 0, 1165, 650)
-        };
-        console.log('success');
+        console.log('success.save');
       })
       .fail(function(){
-        console.log('error');
+        console.log('error.save');
       })
     }
-      setInterval(reloadCanvas, 1000);
+      setInterval(reloadCanvas, 100);
   })
 });
