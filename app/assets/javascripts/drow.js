@@ -202,24 +202,19 @@ window.addEventListener('load', () => {
         data: {illust: data},
         dataType: 'json',
       })
-      .done(function(){
-        $.ajax({
-          url: url,
-          type: "GET",
-          data: {illust: data},
-          dataType: 'json',
-        })
-         const chara = new Image();
-         chara.src = room_illust;
-         chara.onload = function onImageLoad() {
+      .done(function(data){
+        console.log(data);
+        const chara = new Image();
+        chara.src = data.illust;
+        chara.onload = function onImageLoad() {
            context.drawImage(chara, 0, 0, 1165, 650)
-          };
-         console.log('success');
+        };
+        console.log('success');
       })
       .fail(function(){
-        alert('error');
+        console.log('error');
       })
     }
-      setInterval(reloadCanvas, 10000);
+      setInterval(reloadCanvas, 1000);
   })
 });
