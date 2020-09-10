@@ -1,7 +1,15 @@
 .side_ber
   %span#color-palette
   %div
-    %button#clear-button 全消し
-  %button#eraser-button 消しゴムモード
+    #clear-button 
+  .side_ber__point_size 
+    線の太さ 
+    %br 
+    %input#range-selector{:max => "15", :min => "1", :step => "0.1", :type => "range", :value => "5"}/
+    %span#line-width 5
+    %button#eraser-button 消しゴムモード
+  .side_ber__drop
+    = link_to fronts_path, class: ".side_ber__drop__link" do
+      退出 
 
   

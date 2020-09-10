@@ -1,103 +1,16 @@
-
-// ページの読み込みが完了したらコールバック関数が呼ばれる
-// ※コールバック: 第2引数の無名関数(=関数名が省略された関数)
-window.addEventListener('load', () => {
-  const canvas = document.querySelector('#draw-area');
-  // contextを使ってcanvasに絵を書いていく
-  const context = canvas.getContext('2d');
-  // 直前のマウスのcanvas上のx座標とy座標を記録する
-  const lastPosition = { x: null, y: null };
-  // マウスがドラッグされているか(クリックされたままか)判断するためのフラグ
-  let isDrag = false;
-
-  //過去にCanvasが保存されていた場合、それを呼び出す
-  const chara = new Image();
-  const room_illust = $('#room-illust').val();
-  chara.src = room_illust;
-  chara.onload = function onImageLoad() {
-    context.drawImage(chara, 0, 0, 1165, 650)
-  };
-
-  // 絵を書く
-  function draw(x, y) {
-    // マウスがドラッグされていなかったら処理を中断する。
-    // ドラッグしながらしか絵を書くことが出来ない。
-    if(!isDrag) {
-      return;
-    }
-
-    // 線の状態を定義する
-    context.lineJoin = 'round'; 
-    context.lineWidth = 1; 
-    context.strokeStyle = 'black'; 
-
-    if (lastPosition.x === null || lastPosition.y === null) {
-      // ドラッグ開始時の線の開始位置
-      context.moveTo(x, y);
-    } else {
-      // ドラッグ中の線の開始位置
-      context.moveTo(lastPosition.x, lastPosition.y);
-    }
-    
-    context.lineTo(x, y);
-
-    context.stroke();
-
-    // 現在のマウス位置を記録して、次回線を書くときの開始点に使う
-    lastPosition.x = x;
-    lastPosition.y = y;
-  }
-
-  // canvas上に書いた絵を全部消す
-  function clear() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-  }
-
-
-  function dragStart(event) {
-    
-    context.beginPath();
-
-    isDrag = true;
-  }
-  
-  function dragEnd(event) {
-    // 線を書く処理の終了を宣言する
-    context.closePath();
-    isDrag = false;
-
-    // 描画中に記録していた値をリセットする
-    lastPosition.x = null;
-    lastPosition.y = null;
-  }
-
-  // マウス操作やボタンクリック時のイベント処理を定義する
-  function initEventHandler() {
-    const clearButton = document.querySelector('#clear-button');
-    clearButton.addEventListener('click', clear);
-
-    canvas.addEventListener('mousedown', dragStart);
-    canvas.addEventListener('mouseup', dragEnd);
-    canvas.addEventListener('mouseout', dragEnd);
-    canvas.addEventListener('mousemove', (event) => {
-
-      draw(event.layerX, event.layerY);
-    });
-  }
-
-  // イベント処理を初期化する
-  initEventHandler();
-});
-
 // - 線の色を変更する機能
 // - 消しゴム機能
 window.addEventListener('load', () => {
   const canvas = document.querySelector('#draw-area');
   const context = canvas.getContext('2d');
+
   const lastPosition = { x: null, y: null };
   let isDrag = false;
- 
   let currentColor = '#000000';
+ 
+  // 現在の線の太さを記憶する変数
+  // <input id="range-selector" type="range"> の値と連動する
+  let currentLineWidth = 1;
  
   function draw(x, y) {
     if(!isDrag) {
@@ -105,7 +18,7 @@ window.addEventListener('load', () => {
     }
     context.lineCap = 'round';
     context.lineJoin = 'round';
-    context.lineWidth = 5;
+    context.lineWidth = currentLineWidth
     context.strokeStyle = currentColor;
     if (lastPosition.x === null || lastPosition.y === null) {
       context.moveTo(x, y);
@@ -125,7 +38,6 @@ window.addEventListener('load', () => {
  
   function dragStart(event) {
     context.beginPath();
- 
     isDrag = true;
   }
  
@@ -156,16 +68,39 @@ window.addEventListener('load', () => {
   // カラーパレットの設置
   function initColorPalette() {
     const joe = colorjoe.rgb('color-palette', currentColor);
- 
     joe.on('done', color => {
       currentColor = color.hex();
     });
   }
+
+  // 文字の太さの設定・更新を行う機能
+  function initConfigOfLineWidth() {
+    const textForCurrentSize = document.querySelector('#line-width');
+    const rangeSelector = document.querySelector('#range-selector');
+    // 線の太さを記憶している変数の値を更新する
+    currentLineWidth = rangeSelector.value;
+    rangeSelector.addEventListener('input', event => {
+      const width = event.target.value;
+      // 線の太さを記憶している変数の値を更新する
+      currentLineWidth = width;
+      // 更新した線の太さ値(数値)を<input id="range-selector" type="range">の右側に表示する
+      textForCurrentSize.innerText = width;
+    });
+  }
  
   initEventHandler();
- 
   // カラーパレット情報を初期化する
   initColorPalette();
+  // 文字の太さの設定を行う機能を有効にする
+  initConfigOfLineWidth();
+
+  //過去にCanvasが保存されていた場合、それを呼び出す
+  const chara = new Image();
+  const room_illust = $('#room-illust').val();
+  chara.src = room_illust;
+  chara.onload = function onImageLoad() {
+    context.drawImage(chara, 0, 0, 1165, 650)
+  };
 
   //保存ボタン押すとDBにURLとして保存する
   $('#save-button').on('click',function(e){
@@ -231,6 +166,6 @@ window.addEventListener('load', () => {
         console.log('error.save');
       })
     }
-      setInterval(reloadCanvas, 100);
+      setInterval(reloadCanvas, 1000000);
   })
 });

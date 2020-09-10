@@ -9,9 +9,17 @@
 }
 
 .side_ber {
-  background-color: blue;
+  background-color: #bbbbbb;
   width: 250px;
-  position: relative;
+	position: relative;
+		&__point_size {
+			height: 600px;
+			font-size: 14px;
+		}
+}
+
+#eraser-button {
+	margin-top: 20px;
 }
 
 #rgbValue, #hslaValue {
@@ -69,7 +77,9 @@
 
 .colorPicker .twod {
 	float: left;
-	margin: 0.5em;
+	margin: 15px;
+	border: medium solid #dddddd;
+	border-radius: 2%;
 }
 
 /* main dimensions */
@@ -89,11 +99,10 @@
 .colorPicker .twod .bg {
 	position: absolute;
 
-	/* These seem to cause issues in some browsers, careful!
-	border: 1px solid #BBB;
-	-moz-border-radius: .3em;
-	border-radius: .3em;
-	*/
+	// border: 1px solid #BBB;
+	// -moz-border-radius: .3em;
+	// border-radius: .3em;
+	
 }
 .colorPicker .twod .pointer {
 	position: relative;
@@ -131,7 +140,7 @@
 }
 
 .colorPicker .oned .bg {
-	border: 1px solid #BBB;
+	border: 1px solid black;
 	/*
 	-moz-border-radius: .3em;
 	border-radius: .3em;
