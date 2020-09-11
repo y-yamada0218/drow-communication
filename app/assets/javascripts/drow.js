@@ -166,6 +166,6 @@ window.addEventListener('load', () => {
         console.log('error.save');
       })
     }
-      setInterval(reloadCanvas, 1000000);
+      setInterval(reloadCanvas, 150);
   })
 });
