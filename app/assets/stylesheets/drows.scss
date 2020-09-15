@@ -1,11 +1,18 @@
 .main_drow {
-  background-color: #e5ffaa;
-  width: calc(100vw - 250px);
+  background-color: #efffc2;
+	width: calc(100vw - 250px);
+	overflow: scroll;
+		&__member {
+			margin: 5px 20px 0px 20px;
+			display: flex;
+		}
+	
 }
 
 #draw-area{
   background-color: #ffffff;
-  margin: 10px 0px 0px 10px;
+	margin: 10px 0px 0px 10px;
+	overflow: scroll;
 }
 
 .side_ber {

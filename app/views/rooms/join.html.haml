@@ -3,5 +3,5 @@
 
   .wrapper
     = render "main_drow"
-    = render "side_ber"
+    = render partial: 'side_ber', locals: { user: @user }
 %script{:src => "https://cdn.jsdelivr.net/npm/colorjoe@4/dist/colorjoe.min.js"}

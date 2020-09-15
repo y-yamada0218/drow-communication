@@ -1,18 +1,27 @@
 .side
   .side__user
     .side__user__image
-      = image_tag src="IMG_0328.JPG", size: "220x220"
+      = image_tag src="IMG_0328.JPG", size: "220x220",class: "icon_image"
     .side__user__info
       .side__user__info__name
         - if current_user == nil
           Name:  Gest
+          %br
+          Email:
+          %br
+          profile：
         - else 
           Name:  
           = current_user.name
+          %br
+          Email:
+          = current_user.email
+          %br
+          profile：
   .side__icons
     - if current_user == nil
       = link_to user_session_path, class: "side__icons__out" do
-        login
+        ログイン
     - else 
       = link_to edit_user_path(current_user), class: "side__icons__out" do
-        logout
+        ログアウト

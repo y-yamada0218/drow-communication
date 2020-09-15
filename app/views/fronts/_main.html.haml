@@ -7,7 +7,7 @@
         ルーム新規作成
 
   .main__rooms
-    - rooms.each do |room|
+    - rooms.each_with_index do |room, member|
       .main__rooms__state
         .main__rooms__state__image
           - if room.illust == nil
@@ -18,7 +18,9 @@
             .main__rooms__state__data__box__name
               = "ルーム名： #{room.name}"
             .main__rooms__state__data__box__people
-              参加人数： 
+              = "参加人数： #{@users[member]} 人" 
           .main__rooms__state__data__enter
-            = link_to room_path(room.id) do
+            = link_to join_path(room.id) do
               入室
+  .main__logo
+    DrawCommunication2020

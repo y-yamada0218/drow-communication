@@ -144,28 +144,48 @@ window.addEventListener('load', () => {
               dataType: 'json',
             })
             .done(function(data) {
-              console.log(data);
               const chara = new Image();
               chara.src = data.illust;
               chara.onload = function onImageLoad() {
                 context.drawImage(chara, 0, 0, 1165, 650)
-                console.log('success.reload.onload');
               };
-              console.log('success.reload');
             })
             .fail(function(){
-              console.log('error.reload');
             })
           }
       })
 
       .done(function(data){
-        console.log('success.save');
       })
       .fail(function(){
-        console.log('error.save');
       })
     }
-      setInterval(reloadCanvas, 1000000);
+      setInterval(reloadCanvas, 100);
+
+    //参加者を自動更新する
+    $(function(){
+      room_id = $('#room-info').val();
+      reloadurl = '/room/' + room_id
+    
+      let reloadUser = function() {
+      $.ajax({
+        url: reloadurl,
+        type: "get",
+        dataType: 'json',
+      })
+      .done(function(data){
+        console.log(data);
+        $('.main_drow__member__name').empty();
+        data.forEach(function(member){
+          $('.main_drow__member__name').append(`${member.name}さん, `);
+
+        })
+      })
+      .fail(function(){
+        console.log('no');
+      })
+    }
+      setInterval(reloadUser, 3000);
+    });
   })
 });
