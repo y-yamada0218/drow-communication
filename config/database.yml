@@ -50,5 +50,6 @@ test:
 production:
   <<: *default
   database: drow_communication_production
-  username: drow_communication
-  password: <%= ENV['DROW_COMMUNICATION_DATABASE_PASSWORD'] %>
+  username: root
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  socket: /var/lib/mysql/mysql.sock
